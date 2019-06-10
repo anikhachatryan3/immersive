@@ -12,7 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('propane');
+    return view('welcome');
 });
 
-Route::get('propane', );
+Route::post('/propane', 'PropaneController@postData')->name('propane.post');
+
+Route::group(['middleware'=>'auth'], function() {
+    Route::get('/users/{id}', function($id) {
+        return $id;
+    });
+});
+
+Route::get('/users', 'UsersController@usersListing');
+
+Route::get('/propane', 'PropaneController@getAllPosts');
+Route::get('/test', 'PropaneController@test');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('/posts', 'PostsController');
