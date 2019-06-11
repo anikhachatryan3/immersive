@@ -33,3 +33,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/posts', 'PostsController');
+
+Route::get('/assign-hat', 'UsersController@assignHat');
+
+// Route::get('/login-test', 'UsersController@getLogin');
+
+// Route::post('/login-test', 'UsersController@postLogin')->name('login.test');

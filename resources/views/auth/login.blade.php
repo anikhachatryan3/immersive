@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -70,4 +70,16 @@
         </div>
     </div>
 </div>
-@endsection
+@endsection --}}
+
+
+@if(!empty($validator))
+    <p>{{$validator->errors()}}</p>
+@endif
+
+<form method="post" action="{{route('login')}}">
+    {{ csrf_field() }}
+    <input type="email" name="username">
+    <input type="password" name="password">
+    <input type="submit">
+</form>
