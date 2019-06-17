@@ -1,4 +1,4 @@
-{{-- @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -70,10 +70,10 @@
         </div>
     </div>
 </div>
-@endsection --}}
+@endsection
 
 
-@if(!empty($validator))
+{{-- @if(!empty($validator))
     <p>{{$validator->errors()}}</p>
 @endif
 
@@ -82,4 +82,4 @@
     <input type="email" name="username">
     <input type="password" name="password">
     <input type="submit">
-</form>
+</form> --}}

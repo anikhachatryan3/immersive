@@ -13,10 +13,17 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @foreach($users as $user)
+                    {{-- @foreach($users as $user)
                     <p>{{$user->name}}</p>
                     <p>{{$user->email}}</p>
-                    @endforeach
+                    @endforeach --}}
+                    @if(count($posts) < 1)
+                        <p>No Posts Created</p>
+                    @else
+                        @foreach($posts as $post)
+                    <p><a href="{{route('posts.show', $post)}}">{{$post->title}}</a></p>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

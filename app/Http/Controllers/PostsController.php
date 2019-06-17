@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
+use App\UserPost;
+use App\Comment;
 
 class PostsController extends Controller
 {
@@ -13,7 +16,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        // return response()->json(count($posts));
+        return view('home', compact('posts'));
     }
 
     /**
@@ -23,7 +28,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return view('post-create');
     }
 
     /**
@@ -34,7 +39,29 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'title'=>'required',
+            'body'=>'required'
+        ];
+
+        $request->validate($rules);
+
+        $post = Post::create([
+            'title'=>$request->title,
+            'body'=>$request->body
+        ]);
+
+        UserPost::create([
+            'user_id' => 102,
+            'post_id' => $post->id
+        ]);
+
+        //$user = User::find(102);
+
+        //$post->author()->save(102);
+        //$post->author()->save(auth()->user()->id); //use this!
+
+        return redirect()->route('posts.show', 'post_id');
     }
 
     /**
@@ -43,9 +70,10 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        $post->load('author', 'comments');
+        return view('post-show', compact('post'));
     }
 
     /**
@@ -56,7 +84,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('post-edit', compact('post'));
     }
 
     /**
@@ -68,7 +96,19 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'title' => 'required',
+            'body' => 'required'
+        ];
+
+        $request->validate($rules);
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+        // $post->touch();
+        $post->save();
+
+        return view('post-show', compact('post'));
     }
 
     /**
@@ -77,8 +117,28 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('posts');
+    }
+
+    public function storeComment(Request $request) {
+        $rules = [
+            'comment' => 'required'
+        ];
+
+        $request->validate($rules);
+
+        Comment::create([
+            'body'=>$request->comment
+        ]);
+        PostComment::create([
+            'post_id'=>$request->post_id,
+            'comment_id'=>$comment->id
+        ]);
+
+        return redirect()->route('posts.show', $request->post_id);
+
     }
 }

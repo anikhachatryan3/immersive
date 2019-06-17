@@ -36,6 +36,8 @@ Route::resource('/posts', 'PostsController');
 
 Route::get('/assign-hat', 'UsersController@assignHat');
 
+Route::post('/posts/create-comment', 'PostsController@storeComment')->name('comment.create');
+
 // Route::get('/login-test', 'UsersController@getLogin');
 
 // Route::post('/login-test', 'UsersController@postLogin')->name('login.test');

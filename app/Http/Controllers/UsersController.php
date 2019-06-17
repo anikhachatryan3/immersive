@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Hat;
+use App\UserHat;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\LoginFormRequest;
 
@@ -61,18 +62,20 @@ class UsersController extends Controller
         $user = User::find(2);
         $user->hats()->save($hat);
 
-        // UserHat::create([
-        //     'user_id'=>auth()->user()->id,
-        //     'hat_id'=>100
-        // ]);
+        // auth()->user()->hats->save($hat);
+
+        UserHat::create([
+            'user_id'=>auth()->user()->id,
+            'hat_id'=>100
+        ]);
 
         // auth()->user();
 
         $hats = Hat::with('owner')->get();
 
-        // $hats=Hat::with('owner', function ($query) {
-        //     $query->where('user_id', 50);
-        // })->get();
+        $hats=Hat::with('owner', function ($query) {
+            $query->where('user_id', 50);
+        })->get();
 
         return $hats;
 
